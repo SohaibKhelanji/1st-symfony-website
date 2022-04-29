@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}{{ parent() }} - Crud{% endblock %}
+
+{% block body %}
+    <h1 style="text-align: center">Movies</h1>
+    <br>
+    <table class="table" style="width: 50%;margin: 0 auto 0 auto">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Review</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for movie in movies %}
+            <tr style="margin-top: auto;margin-bottom: auto">
+                <td>{{ movie.id }}</td>
+                <td>{{ movie.title }}</td>
+                <td>{{ movie.description }}</td>
+                <td>{{ movie.review }}</td>
+                <td>
+                    <button class="btn btn-info" onclick="location.href='{{ path('app_movie_show', {'id': movie.id}) }}'">Show</button>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <button class="btn btn-warning" onclick="location.href='{{ path('app_movie_edit', {'id': movie.id}) }}'">Edit</button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <div class="container text-center">
+        {% if is_granted('ROLE_ADMIN') %}
+        <button class="btn btn-primary inline_block" onclick="location.href='{{ path('app_movie_new') }}'">Create new</button>
+        {% endif %}
+    </div>
+{% endblock %}
